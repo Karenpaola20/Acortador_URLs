@@ -2,7 +2,8 @@ const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 
 const {
   DynamoDBDocumentClient,
-  GetCommand
+  GetCommand,
+  UpdateCommand
 } = require("@aws-sdk/lib-dynamodb");
 
 const client = new DynamoDBClient({});
@@ -32,8 +33,30 @@ exports.handler = async (event) => {
       };
     }
 
+    const today = new Date().toISOString().split("T")[0];
+
+    await docClient.send(new UpdateCommand({
+
+      TableName: process.env.TABLE_NAME,
+
+      Key: {
+        code
+      },
+
+      UpdateExpression: `
+        SET clicks = clicks + :inc,
+            visits = list_append(visits, :visit)
+      `,
+
+      ExpressionAttributeValues: {
+        ":inc": 1,
+        ":visit": [today]
+      }
+    }));
+
     return {
       statusCode: 302,
+
       headers: {
         Location: result.Item.originalUrl
       }

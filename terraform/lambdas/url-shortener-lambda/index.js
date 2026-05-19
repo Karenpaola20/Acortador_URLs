@@ -24,7 +24,9 @@ exports.handler = async (event) => {
       Item: {
         code,
         originalUrl,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        clicks: 0,
+        visits: []
       }
     }));
 
