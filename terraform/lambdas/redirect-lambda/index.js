@@ -2,7 +2,7 @@ const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 
 const {
   DynamoDBDocumentClient,
-  PutCommand
+  GetCommand
 } = require("@aws-sdk/lib-dynamodb");
 
 const client = new DynamoDBClient({});
@@ -13,27 +13,30 @@ exports.handler = async (event) => {
 
   try {
 
-    const body = JSON.parse(event.body);
+    const code = event.pathParameters.codigo;
 
-    const originalUrl = body.url;
-
-    const code = Math.random().toString(36).substring(2, 8);
-
-    await docClient.send(new PutCommand({
+    const result = await docClient.send(new GetCommand({
       TableName: process.env.TABLE_NAME,
-      Item: {
-        code,
-        originalUrl,
-        createdAt: new Date().toISOString()
+      Key: {
+        code
       }
     }));
 
+    if (!result.Item) {
+
+      return {
+        statusCode: 404,
+        body: JSON.stringify({
+          message: "URL no encontrada"
+        })
+      };
+    }
+
     return {
-      statusCode: 200,
-      body: JSON.stringify({
-        shortUrl: `${process.env.API_URL}/${code}`,
-        code
-      })
+      statusCode: 302,
+      headers: {
+        Location: result.Item.originalUrl
+      }
     };
 
   } catch (error) {

@@ -32,7 +32,8 @@ resource "aws_iam_role_policy" "dynamodb_policy" {
       Effect = "Allow"
 
       Action = [
-        "dynamodb:PutItem"
+        "dynamodb:PutItem",
+        "dynamodb:GetItem"
       ]
 
       Resource = aws_dynamodb_table.urls_table.arn

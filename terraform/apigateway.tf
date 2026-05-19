@@ -30,3 +30,22 @@ resource "aws_apigatewayv2_stage" "default" {
 
   auto_deploy = true
 }
+
+// Aqui el Redireccionamiento
+resource "aws_apigatewayv2_integration" "redirect_integration" {
+  
+  api_id = aws_apigatewayv2_api.shortener_api.id
+
+  integration_type = "AWS_PROXY"
+
+  integration_uri = aws_lambda_function.redirect_lambda.invoke_arn
+}
+
+resource "aws_apigatewayv2_route" "redirect_route" {
+
+  api_id = aws_apigatewayv2_api.shortener_api.id
+
+  route_key = "GET /{codigo}"
+
+  target = "integrations/${aws_apigatewayv2_integration.redirect_integration.id}"
+}
