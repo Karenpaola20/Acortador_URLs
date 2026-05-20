@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>URL Shortener</title>
+  <title>URL Statistics</title>
 
   <link rel="stylesheet" href="style.css">
 </head>
@@ -14,33 +14,33 @@
 
     <div class="card">
 
-      <h1>🔗 URL Shortener</h1>
+      <h1>📊 URL Statistics</h1>
 
       <p class="subtitle">
-        Paste your long URL and generate a short link instantly.
+        Enter the short code to view analytics.
       </p>
 
       <input
         type="text"
-        id="urlInput"
-        placeholder="https://example.com"
+        id="codeInput"
+        placeholder="Enter short code"
       >
 
-      <button onclick="shortenUrl()">
-        Shorten URL
+      <button onclick="getStats()">
+        Get Statistics
       </button>
 
-      <div id="result"></div>
+      <div id="statsResult"></div>
 
-      <a href="stats.html" class="link-btn">
-        View Statistics
+      <a href="index.html" class="link-btn">
+        ← Back to Shortener
       </a>
 
     </div>
 
   </div>
 
-  <script src="app.js"></script>
+  <script src="stats.js"></script>
 
 </body>
 </html>
