@@ -29,4 +29,4 @@ jobs:
       - name: Upload frontend to S3
         run: |
 
-          aws s3 sync frontend/ s3://url-shortener-frontend-kb --delete
+          aws s3 sync terraform/frontend/ s3://url-shortener-frontend-kb --delete
