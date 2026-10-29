@@ -1,0 +1,52 @@
+name: Calidad de Codigo
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  eslint:
+    name: ESLint (complejidad ciclomatica)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Bloquea el PR si alguna funcion tiene V(G) > 5
+      - name: Verificar complejidad ciclomatica
+        run: >
+          npx --yes eslint@8.57.1
+          --no-eslintrc
+          --env node,browser,es2022
+          --parser-options ecmaVersion:2022
+          --rule '{"complexity": ["error", 5]}'
+          backend frontend
+          --ignore-pattern node_modules
+
+  pruebas:
+    name: Pruebas automaticas
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Ejecutar pruebas
+        run: npm test

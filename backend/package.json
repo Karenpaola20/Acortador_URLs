@@ -1,0 +1,18 @@
+{
+  "name": "acortador-urls-backend",
+  "version": "1.0.0",
+  "description": "Acortador de URLs - backend local (Express)",
+  "main": "server.js",
+  "scripts": {
+    "test": "node --test",
+    "start": "node server.js"
+  },
+  "license": "ISC",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^4.22.3"
+  }
+}
