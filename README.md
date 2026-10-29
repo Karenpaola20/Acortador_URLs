@@ -1,32 +1,64 @@
-# URL Shortener AWS Serverless
+# URL Shortener
 
-Proyecto de acortador de URLs desarrollado con arquitectura serverless utilizando AWS y Terraform.
+Acortador de URLs con Node.js + Express. Corre en local, sin AWS.
+
+> La versión original (parcial) se desplegó en AWS serverless (Lambda + API Gateway + DynamoDB + S3/CloudFront). Ese código de infraestructura se conserva en `terraform/` como referencia, pero ya no se usa.
+
+---
+
+# Cómo correrlo
+
+Requisitos: Node.js 18 o superior.
+
+```bash
+cd backend
+npm install
+npm start
+```
+
+Abrir http://localhost:3000
+
+Pruebas automáticas:
+
+```bash
+cd backend
+npm test
+```
+
+Los enlaces se guardan en `backend/data/urls.json` (se crea solo).
+
+---
+
+# Estructura
+
+```
+backend/
+  app.js        Endpoints /shorten, /{codigo} y /stats/{codigo}
+  store.js      Almacenamiento en archivo JSON (reemplaza a DynamoDB)
+  server.js     Arranque del servidor
+  app.test.js   Pruebas
+frontend/       HTML/CSS/JS (lo sirve el backend)
+terraform/      Infraestructura AWS anterior (solo referencia)
+```
 
 ---
 
 # Arquitectura
 
-Frontend (S3 + CloudFront)
+Frontend (HTML/JS)
 ↓
-API Gateway
+Express (Node.js)
 ↓
-AWS Lambda
-↓
-DynamoDB
+Archivo JSON
 
 ---
 
 # Tecnologías utilizadas
 
-- AWS Lambda
-- API Gateway
-- DynamoDB
-- Terraform
-- AWS S3
-- CloudFront
-- GitHub Actions
+- Node.js + Express
 - JavaScript
 - HTML/CSS
+- node:test (pruebas)
 
 ---
 
@@ -68,6 +100,8 @@ Permite visualizar estadísticas de visitas del enlace.
 
 GET /stats/{codigo}
 
+Filtro opcional por fecha: GET /stats/{codigo}?date=2026-10-28
+
 ### Información mostrada
 
 - Total de visitas
@@ -84,43 +118,5 @@ El proyecto incluye:
 - Copiar enlace automáticamente
 - Página de estadísticas
 - Navegación entre vistas
-
----
-
-# Infraestructura con Terraform
-
-El proyecto utiliza Terraform para desplegar:
-
-- AWS Lambda
-- API Gateway
-- IAM Roles
-- DynamoDB
-- S3 Bucket
-- CloudFront
-
----
-
-# CI/CD
-
-Se implementó GitHub Actions para despliegue automático del frontend hacia AWS S3.
-
-Workflow:
-
-GitHub Push
-↓
-GitHub Actions
-↓
-Deploy automático a S3
-↓
-CloudFront actualiza frontend
-
----
-
-# Despliegue Terraform
-
-```bash
-terraform init
-terraform apply
-```
 
 ---

@@ -1,0 +1,21 @@
+{
+  "name": "acortador-urls-backend",
+  "version": "1.0.0",
+  "description": "Acortador de URLs - backend local (Express)",
+  "main": "server.js",
+  "scripts": {
+    "test": "node --test",
+    "start": "node server.js",
+    "lint": "eslint --no-eslintrc -c .eslintrc.json . ../frontend"
+  },
+  "license": "ISC",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.22.3"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1"
+  }
+}

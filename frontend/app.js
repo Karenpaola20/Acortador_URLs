@@ -1,4 +1,5 @@
-const API_URL = "https://ixhu0zrdjc.execute-api.us-east-1.amazonaws.com";
+// El backend sirve el frontend, así que la API está en el mismo origen
+const API_URL = window.location.origin;
 
 async function shortenUrl() {
 

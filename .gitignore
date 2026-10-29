@@ -1,0 +1,20 @@
+# Node
+node_modules/
+npm-debug.log
+
+# Datos locales del acortador
+backend/data/
+
+# Terraform (infraestructura AWS anterior)
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+*.tfvars
+*.tfvars.json
+*.zip
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/

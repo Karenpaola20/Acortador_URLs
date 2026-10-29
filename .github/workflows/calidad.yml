@@ -1,0 +1,55 @@
+name: Calidad de Codigo
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  eslint:
+    name: ESLint (complejidad ciclomatica)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Versiones exactas del lockfile y sin ejecutar scripts de paquetes
+      - name: Instalar dependencias
+        run: npm ci --ignore-scripts
+
+      # Bloquea el PR si alguna funcion tiene V(G) > 5
+      - name: Verificar complejidad ciclomatica
+        run: npm run lint
+
+  pruebas:
+    name: Pruebas automaticas
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependencias
+        run: npm ci --ignore-scripts
+
+      - name: Ejecutar pruebas
+        run: npm test
