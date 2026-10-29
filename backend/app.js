@@ -17,6 +17,31 @@ function isValidUrl(value) {
   }
 }
 
+// Valida el cuerpo de POST /shorten. Devuelve el mensaje de error o null.
+function validarSolicitud(body) {
+  if (body) {
+    if (body.url) {
+      if (typeof body.url === "string") {
+        if (body.url.length <= 2048) {
+          if (isValidUrl(body.url)) {
+            return null;
+          } else {
+            return "URL inválida";
+          }
+        } else {
+          return "URL demasiado larga";
+        }
+      } else {
+        return "La URL debe ser texto";
+      }
+    } else {
+      return "Falta el campo url";
+    }
+  } else {
+    return "Cuerpo vacío";
+  }
+}
+
 function createApp(store, baseUrl) {
   const app = express();
 
@@ -28,11 +53,13 @@ function createApp(store, baseUrl) {
 
   // POST /shorten  (antes: url-shortener-lambda)
   app.post("/shorten", (req, res) => {
-    const originalUrl = req.body && req.body.url;
+    const error = validarSolicitud(req.body);
 
-    if (!isValidUrl(originalUrl)) {
-      return res.status(400).json({ error: "URL inválida" });
+    if (error) {
+      return res.status(400).json({ error });
     }
+
+    const originalUrl = req.body.url;
 
     let code = generateCode();
     while (store.get(code)) {
