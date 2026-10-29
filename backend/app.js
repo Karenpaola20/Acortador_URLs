@@ -2,7 +2,7 @@
 // 3 Lambdas detrás de API Gateway, con los mismos endpoints y respuestas.
 const path = require("path");
 const express = require("express");
-const cors = require("cors");
+
 
 function generateCode() {
   return Math.random().toString(36).substring(2, 8);
@@ -20,7 +20,7 @@ function isValidUrl(value) {
 function createApp(store, baseUrl) {
   const app = express();
 
-  app.use(cors());
+  
   app.use(express.json());
 
   // Frontend (antes en S3 + CloudFront)
