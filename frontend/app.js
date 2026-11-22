@@ -32,9 +32,12 @@ async function shortenUrl() {
   `;
 }
 
-function copyUrl(url) {
+async function copyUrl(url) {
 
-  navigator.clipboard.writeText(url);
-
-  alert("Copied!");
+  try {
+    await navigator.clipboard.writeText(url);
+    alert("Copied!");
+  } catch (error) {
+    alert("Could not copy the link");
+  }
 }
